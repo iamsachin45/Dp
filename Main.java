@@ -20,35 +20,33 @@ public class Main
         Scanner sc = new Scanner(System.in);
         Main m = new Main();
         int n = sc.nextInt();
-        int max = sc.nextInt();
-        int[] w = new int[n];
-        int[] v = new int[n];
-        for(int i=0;i<n;i++)
+        int[] a = new int[n];
+        for(int i=0;i<a.length;i++)
         {
-            w[i] = sc.nextInt();
-            v[i] = sc.nextInt();
+            a[i] = sc.nextInt();
         }
-        System.out.println(m.vacation(w,v,max,n-1));
+        System.out.println(m.findans(a,0,-1));
     }
-    public int vacation(int[] w,int[] v,int max,int idx)
+    public int findans(int[] a,int idx,int pre)
     {
-        if(idx==0)
+        if(idx==a.length)
         {
-            if(w[idx]<=max)
-            {
-                return v[idx];
-            }
             return 0;
         }
-        // recursion 
-        // not pick
-        int notpick = vacation(w,v,max,idx-1);
-        int pick = 0;
-        if(max>=w[idx])
+        int l1=0,l2=0;
+        if(pre!=-1)
         {
-            pick = v[idx] + vacation(w,v,max-w[idx],idx-1);
+            if(a[pre]<a[idx])
+            {
+                l1 = 1+findans(a,idx+1,idx);
+                // System.out.println("helo "+ l1);
+            }
+            l2 = findans(a,idx+1,pre);
+            // System.out.println("hello inside " + l1  + " " + l2);
+            return Math.max(l1,l2);
         }
-        return Math.max(pick,notpick);
-        
+        l1 = findans(a,idx+1,idx)+1;
+        l2 = findans(a,idx+1,pre);
+        return Math.max(l1,l2);
     }
 }
